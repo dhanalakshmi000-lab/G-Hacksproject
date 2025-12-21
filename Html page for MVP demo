@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Health Guard AI – MVP Demo</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #eef6fb;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.header {
+    border-bottom: 2px solid #cfe6f5;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    color: #1a73a8;
+    margin: 0;
+}
+
+.header p {
+    color: #666;
+    margin-top: 5px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+textarea {
+    width: 100%;
+    height: 90px;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+.buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+.analyze-btn {
+    background: #1a73a8;
+    color: white;
+}
+
+.stress-btn {
+    background: #e3f2fd;
+    color: #1a73a8;
+    border: 1px solid #1a73a8;
+}
+
+.result-box {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f7fbff;
+    border-left: 5px solid #1a73a8;
+    display: none;
+}
+
+.result-box h3 {
+    margin-top: 0;
+    color: #1a73a8;
+}
+
+.steps {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.steps li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 13px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Health Guard AI</h1>
+        <p>AI-assisted symptom analysis & guided care (Demo MVP)</p>
+    </div>
+
+    <label>Describe your symptoms</label>
+    <textarea id="symptomInput" placeholder="Example: I am feeling dizzy"></textarea>
+
+    <div class="buttons">
+        <button class="analyze-btn" onclick="analyzeSymptoms()">Analyze Symptoms</button>
+        <button class="stress-btn" onclick="openStress()">Stress Calculator</button>
+    </div>
+
+    <div class="result-box" id="analysisResult">
+        <h3>AI Medical Observation</h3>
+        <p id="reasonText"></p>
+
+        <h3>Step-by-Step Guidance</h3>
+        <ol class="steps" id="actionSteps"></ol>
+    </div>
+
+    <footer>
+        ⚠️ Demo purpose only. Not a replacement for professional medical advice.
+    </footer>
+</div>
+
+<script>
+let currentCondition = "";
+
+// Clear results when user types new input
+document.getElementById("symptomInput").addEventListener("input", () => {
+    document.getElementById("analysisResult").style.display = "none";
+    document.getElementById("actionSteps").innerHTML = "";
+    currentCondition = "";
+});
+
+function analyzeSymptoms() {
+    const input = document.getElementById("symptomInput").value.toLowerCase();
+    const result = document.getElementById("analysisResult");
+    const steps = document.getElementById("actionSteps");
+
+    steps.innerHTML = "";
+    let reason = "";
+    let stepList = [];
+
+    if (input.includes("dizzy")) {
+        currentCondition = "dizzy";
+        reason = "Dizziness may be caused by dehydration, low blood pressure, fatigue, or sudden posture changes.";
+
+        stepList = [
+            "Step 1: Sit or lie down immediately to prevent falls and stabilize your body.",
+            "Step 2: Drink water or fluids slowly to correct possible dehydration.",
+            "Step 3: Avoid sudden movements such as standing up quickly or turning your head fast.",
+            "Step 4: Rest in a calm environment and monitor symptoms for the next 24 hours.",
+            "Step 5: Consult a healthcare professional if dizziness continues or worsens."
+        ];
+    }
+    else if (input.includes("vomiting")) {
+        currentCondition = "vomiting";
+        reason = "Vomiting is commonly linked to food poisoning, stomach infection, acidity, or digestive irritation.";
+
+        stepList = [
+            "Step 1: Stop eating solid foods temporarily to allow the stomach to settle.",
+            "Step 2: Sip ORS or clear fluids frequently to prevent dehydration.",
+            "Step 3: Rest in a comfortable position and avoid physical activity.",
+            "Step 4: Avoid oily, spicy, or heavy foods until symptoms improve.",
+            "Step 5: Seek medical care if vomiting persists or contains blood."
+        ];
+    }
+    else if (input.includes("fever") || input.includes("temperature")) {
+        currentCondition = "fever";
+        reason = "Elevated body temperature may indicate infection, viral illness, or inflammation.";
+
+        stepList = [
+            "Step 1: Take complete rest and avoid strenuous activity.",
+            "Step 2: Drink plenty of fluids to maintain hydration.",
+            "Step 3: Monitor your body temperature at regular intervals.",
+            "Step 4: Wear light clothing and stay in a cool environment.",
+            "Step 5: Consult a doctor if fever persists beyond two days or rises further."
+        ];
+    }
+    else {
+        reason = "Unable to recognize the symptom. Please describe it clearly.";
+        stepList = [
+            "Step 1: Re-enter your symptom using simple language.",
+            "Step 2: Example: I am feeling dizzy / I am feeling like vomiting.",
+            "Step 3: Click Analyze Symptoms again."
+        ];
+    }
+
+    document.getElementById("reasonText").innerText = reason;
+
+    stepList.forEach(step => {
+        const li = document.createElement("li");
+        li.innerText = step;
+        steps.appendChild(li);
+    });
+
+    result.style.display = "block";
+}
+
+function openStress() {
+    if (!currentCondition) {
+        alert("Please analyze symptoms first.");
+        return;
+    }
+    window.open("stress.html?condition=" + currentCondition, "_blank");
+}
+</script>
+
+</body>
+</html>
