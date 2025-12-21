@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stress Level Analysis</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f8fc;
+}
+
+.container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #1a73a8;
+}
+
+.bar-container {
+    background: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 35px;
+    margin: 20px 0;
+}
+
+.bar {
+    height: 100%;
+    width: 0%;
+    background: #1a73a8;
+    text-align: right;
+    padding-right: 10px;
+    color: white;
+    line-height: 35px;
+    font-weight: bold;
+    transition: width 1s;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 13px;
+    color: #777;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Stress Level Report</h1>
+
+    <div class="bar-container">
+        <div class="bar" id="stressBar">0%</div>
+    </div>
+
+    <div class="section">
+        <h3>Reason</h3>
+        <p id="reasonText"></p>
+    </div>
+
+    <div class="section">
+        <h3>What You Should Do</h3>
+        <p id="solutionText"></p>
+    </div>
+
+    <footer>
+        ⚠️ Demo stress visualization only
+    </footer>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const condition = params.get("condition");
+
+const bar = document.getElementById("stressBar");
+
+if (condition === "dizzy") {
+    bar.style.width = "45%";
+    bar.innerText = "45%";
+    reasonText.innerText = "Moderate physical stress due to dehydration or fatigue.";
+    solutionText.innerText = "Drink water, rest, and avoid screen exposure.";
+}
+else if (condition === "vomiting") {
+    bar.style.width = "70%";
+    bar.innerText = "70%";
+    reasonText.innerText = "High digestive system stress.";
+    solutionText.innerText = "Rest stomach, hydrate, and consult doctor if needed.";
+}
+else if (condition === "fever") {
+    bar.style.width = "80%";
+    bar.innerText = "80%";
+    reasonText.innerText = "High immune response stress.";
+    solutionText.innerText = "Control temperature, rest, and seek medical care.";
+}
+</script>
+
+</body>
+</html>
